@@ -1,39 +1,24 @@
 import { useState } from 'react';
 
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [values, setValues] = useState({email: '', username: '', password: ''});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case 'email':
-        setEmail(value);
-        break;
-      case 'username':
-        setUsername(value);
-        break;
-      case 'password':
-        setPassword(value);
-        break;
-      default:
-        break;
-    };
+    setValues({...values, [name]: value});
   };
 
-  const handleSubmit = () => {
-    const formData = { email, username, password };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
     fetch('http://localhost:5000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(values)
     })
     .then(res => res.json())
-    .then(data => console.log('Success:', data))
+    .then(data => console.log(data))
     .catch(error => console.error('Error:', error));
   };
 
