@@ -1,33 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  useEffect(() => {
-    console.log(username);
-  }, [username]);
-
-  useEffect(() => {
-    console.log(password);
-  }, [password]);
+  const [values, setValues] = useState({username: '', password: ''});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case 'username':
-        setUsername(value);
-        break;
-      case 'password':
-        setPassword(value);
-        break;
-      default:
-        break;
-    };
+    setValues({...values, [name]: value});
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data));
+  }
+
   return (
-    <form id='login'>
+    <form id='login' onSubmit={handleSubmit}>
       <label>
         Username:
         <input type='text' name='username' required onChange={handleInputChange} />
@@ -36,7 +31,7 @@ const Login = () => {
         Password:
         <input type='password' name='password' required onChange={handleInputChange} />
       </label>
-      <button>Login</button>
+      <input type='submit' value='Login' />
     </form>
   )
 };
