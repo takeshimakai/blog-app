@@ -18,7 +18,8 @@ const Login = () => {
       body: JSON.stringify(values)
     })
     .then(res => res.json())
-    .then(data => console.log(data));
+    .then(data => localStorage.setItem('token', JSON.stringify(data)))
+    .then(console.log(JSON.parse(localStorage.getItem('token'))))
   }
 
   return (
