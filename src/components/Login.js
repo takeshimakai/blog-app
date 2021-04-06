@@ -1,7 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Login = () => {
   const [values, setValues] = useState({username: '', password: ''});
+
+  /*
+  useEffect(() => {
+    localStorage.clear();
+    console.log(localStorage.length);
+  }, []);
+  */
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
