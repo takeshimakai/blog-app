@@ -1,10 +1,10 @@
 const Post = (props) => {
-  const { title, body, datePublished } = props.post;
+  const { title, content, datePublished } = props.post;
 
   return (
     <div className='post'>
       <h3>{title}</h3>
-      <p>{body}</p>
+      <p>{content}</p>
       <p>{datePublished}</p>
     </div>
   )
