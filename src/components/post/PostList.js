@@ -10,9 +10,10 @@ const PostList = () => {
   }, []);
 
   const fetchPosts = () => {
-    fetch('http://localhost:5000')
+    fetch('http://localhost:5000/posts')
     .then(res => res.json())
     .then(data => setPosts(data))
+    .catch(err => console.log(err))
   };
 
   return (

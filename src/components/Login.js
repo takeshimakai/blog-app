@@ -1,32 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Login = () => {
   const [values, setValues] = useState({username: '', password: ''});
-
-  /*
-  useEffect(() => {
-    localStorage.clear();
-    console.log(localStorage.length);
-  }, []);
-  */
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({...values, [name]: value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(values)
-    })
-    .then(res => res.json())
-    .then(data => localStorage.setItem('token', JSON.stringify(data)))
-    .then(console.log(JSON.parse(localStorage.getItem('token'))))
+    try {
+      const res = await fetch('http://localhost:5000/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      });
+      
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('token', data);
+        console.log(localStorage.getItem('token'));
+      } else {
+        throw data;
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
 
   return (
