@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
-const Login = () => {
+const Login = (props) => {
+  const { verifyToken } = props;
+
   const [values, setValues] = useState({username: '', password: ''});
 
   const handleInputChange = (e) => {
@@ -19,13 +21,13 @@ const Login = () => {
         body: JSON.stringify(values)
       });
       
-      const data = await res.json();
+      const user = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('token', data);
-        console.log(localStorage.getItem('token'));
+        localStorage.setItem('user', JSON.stringify(user));
+        verifyToken();
       } else {
-        throw data;
+        throw user;
       }
     }
     catch (err) {

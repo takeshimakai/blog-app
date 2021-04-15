@@ -8,25 +8,29 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [tokenIsValid, setTokenIsValid] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     verifyToken();
   }, []);
 
   const verifyToken = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
       fetch('http://localhost:5000/user/verifytoken', {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${user.token}`
         }
       })
       .then(res => {
         if (res.ok) {
           setTokenIsValid(true);
+          if (user.isAdmin) {
+            setIsAdmin(true);
+          }
         } else {
-          localStorage.removeItem('token');
+          localStorage.removeItem('user');
           setTokenIsValid(false);
         }
       })
@@ -36,8 +40,8 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      {!tokenIsValid && <Login />}
+      <Navbar tokenIsValid={tokenIsValid} />
+      {!tokenIsValid && <Login verifyToken={verifyToken} setIsAdmin={setIsAdmin} />}
       <Switch>
         <Route exact path='/'>
           <PostList />
