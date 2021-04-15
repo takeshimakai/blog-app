@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const Login = (props) => {
-  const { verifyToken } = props;
+  const { setUser } = props;
 
   const [values, setValues] = useState({username: '', password: ''});
 
@@ -25,7 +25,7 @@ const Login = (props) => {
 
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(user));
-        verifyToken();
+        setUser(user);
       } else {
         throw user;
       }

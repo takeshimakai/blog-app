@@ -4,45 +4,46 @@ import Navbar from './components/Navbar';
 import PostList from './components/post/PostList';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import PostForm from './components/PostForm';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [tokenIsValid, setTokenIsValid] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
-    verifyToken();
+    setUser(JSON.parse(localStorage.getItem('user')));
   }, []);
 
-  const verifyToken = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+  useEffect(() => {
     if (user) {
-      fetch('http://localhost:5000/user/verifytoken', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        }
-      })
-      .then(res => {
-        if (res.ok) {
-          setTokenIsValid(true);
-          if (user.isAdmin) {
-            setIsAdmin(true);
-          }
-        } else {
-          localStorage.removeItem('user');
-          setTokenIsValid(false);
-        }
-      })
-      .catch(err => console.log(err));
+      verifyToken(user.token);
     }
-  }
+  }, [user])
+
+  const verifyToken = (token) => {
+    fetch('http://localhost:5000/user/verifytoken', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => {
+      if (!res.ok) {
+        localStorage.removeItem('user');
+        setUser();
+      }
+    })
+    .catch(err => console.log(err));
+  };
 
   return (
     <div className="App">
-      <Navbar tokenIsValid={tokenIsValid} />
-      {!tokenIsValid && <Login verifyToken={verifyToken} setIsAdmin={setIsAdmin} />}
+      <Navbar user={user} />
+      {!user && <Login setUser={setUser} />}
       <Switch>
+        <Route exact path='/new-post'>
+          <PostForm />
+        </Route>
         <Route exact path='/'>
           <PostList />
         </Route>
