@@ -1,24 +1,22 @@
 import { Switch, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import Navbar from './components/Navbar';
 import PostList from './components/post/PostList';
 import Login from './components/Login';
+import Logout from './components/Logout';
 import Signup from './components/Signup';
 import PostForm from './components/PostForm';
-import { useEffect, useState } from 'react';
+import Error from './components/Error';
 
 function App() {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('user')));
-  }, []);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   useEffect(() => {
     if (user) {
       verifyToken(user.token);
     }
-  }, [user])
+  }, []);
 
   const verifyToken = (token) => {
     fetch('http://localhost:5000/user/verifytoken', {
@@ -39,10 +37,16 @@ function App() {
   return (
     <div className="App">
       <Navbar user={user} />
-      {!user && <Login setUser={setUser} />}
+      {user
+        ? <Logout setUser={setUser} />
+        : <Login setUser={setUser} />
+      }
       <Switch>
         <Route exact path='/new-post'>
-          <PostForm />
+          {user && user.isAdmin
+            ? <PostForm />
+            : <Error />
+          }
         </Route>
         <Route exact path='/'>
           <PostList />
