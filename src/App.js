@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Navbar from './components/Navbar';
@@ -35,27 +35,29 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Navbar user={user} />
-      {user
-        ? <Logout setUser={setUser} />
-        : <Login setUser={setUser} />
-      }
-      <Switch>
-        <Route exact path='/new-post'>
-          {user && user.isAdmin
-            ? <PostForm />
-            : <Error />
-          }
-        </Route>
-        <Route exact path='/'>
-          <PostList />
-        </Route>
-        <Route exact path='/signup'>
-          <Signup />
-        </Route>
-      </Switch>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Navbar user={user} />
+        {user
+          ? <Logout setUser={setUser} />
+          : <Login setUser={setUser} />
+        }
+        <Switch>
+          <Route exact path='/new-post'>
+            {user && user.isAdmin
+              ? <PostForm />
+              : <Error />
+            }
+          </Route>
+          <Route exact path='/signup'>
+            <Signup />
+          </Route>
+          <Route path='/'>
+            <PostList user={user} />
+          </Route>
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 }
 

@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const PostForm = () => {
+const PostForm = (props) => {
+  const { post } = props;
+
   const [values, setValues] = useState({ title: '', content: '' });
+
+  useEffect(() => {
+    if (post) {
+      setValues({...values, ...post});
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,14 +51,27 @@ const PostForm = () => {
   }
 
   return (
-    <form>
+    <form className='post-form'>
       <div className='input-container'>
         <label htmlFor='title'>Title:</label>
-        <input id='title' name='title' type='text' required onChange={handleInputChange} />
+        <input
+          id='title'
+          name='title'
+          type='text'
+          defaultValue={values.title}
+          required
+          onChange={handleInputChange}
+        />
       </div>
       <div className='input-container'>
         <label htmlFor='content'>Content:</label>
-        <textarea id='content' name='content' required onChange={handleInputChange} />
+        <textarea
+          id='content'
+          name='content'
+          defaultValue={values.content}
+          required
+          onChange={handleInputChange}
+        />
       </div>
       <input type='submit' name='save' value='Save' onClick={handleSubmit} />
       <input type='submit' name='publish' value='Save and publish' onClick={handleSubmit} />
