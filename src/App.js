@@ -9,30 +9,23 @@ import Signup from './components/Signup';
 import PostForm from './components/PostForm';
 import Error from './components/Error';
 
+import tokenIsValid from './utils/tokenIsValid';
+
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   useEffect(() => {
     if (user) {
-      verifyToken(user.token);
+      tokenIsValid(user.token)
+      .then(res => {
+        if (res === false) {
+          localStorage.removeItem('user');
+          setUser();
+        }
+      })
+      .catch(err => console.log(err));
     }
   }, []);
-
-  const verifyToken = (token) => {
-    fetch('http://localhost:5000/user/verifytoken', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(res => {
-      if (!res.ok) {
-        localStorage.removeItem('user');
-        setUser();
-      }
-    })
-    .catch(err => console.log(err));
-  };
 
   return (
     <BrowserRouter>

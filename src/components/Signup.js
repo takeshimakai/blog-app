@@ -26,15 +26,33 @@ const Signup = () => {
     <form id='signup' onSubmit={handleSubmit}>
       <label>
         Email:
-        <input type='email' name='email' required onChange={handleInputChange} />
+        <input
+          type='email'
+          name='email'
+          value={values.email}
+          required
+          onChange={handleInputChange}
+        />
       </label>
       <label>
         Username:
-        <input type='text' name='username' required onChange={handleInputChange} />
+        <input
+          type='text'
+          name='username'
+          value={values.username}
+          required
+          onChange={handleInputChange}
+        />
       </label>
       <label>
         Password:
-        <input type='password' name='password' required onChange={handleInputChange} />
+        <input
+          type='password'
+          name='password'
+          value={values.password}
+          required
+          onChange={handleInputChange}
+        />
       </label>
       <input type='submit' value='Sign up' />
     </form>
