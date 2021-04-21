@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
+import UserContext from '../../context/UserContext';
 
 const CommentForm = (props) => {
-  const { postId, user, fetchComments } = props;
+  const { postId, fetchComments } = props;
+  const { currentUser, updateCurrentUser } = useContext(UserContext);
 
   const [value, setValue] = useState('');
 
@@ -14,9 +17,9 @@ const CommentForm = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+        'Authorization': `Bearer ${currentUser.token}`
       },
-      body: JSON.stringify({ comment: value, user: user.id })
+      body: JSON.stringify({ comment: value, user: currentUser.id })
     })
     .then(res => {
       setValue('');
@@ -24,7 +27,8 @@ const CommentForm = (props) => {
         fetchComments();
       }
       if (res.status === 401) {
-        
+        localStorage.removeItem('user');
+        updateCurrentUser();
       }
     })
     .catch(err => console.log(err));

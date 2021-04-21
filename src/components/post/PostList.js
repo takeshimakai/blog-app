@@ -4,9 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import PostPreview from './PostPreview';
 import Post from './Post';
 
-const PostList = (props) => {
-  const { user } = props;
-
+const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +25,7 @@ const PostList = (props) => {
   return (
     <Switch>
       <Route path='/:postId'>
-        <Post posts={posts} user={user} isLoading={isLoading} />
+        <Post posts={posts} isLoading={isLoading} />
       </Route>
       <Route path='/'>
         <div id='post-list'>

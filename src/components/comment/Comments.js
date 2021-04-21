@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 
 import CommentForm from './CommentForm';
+import UserContext from '../../context/UserContext';
 
 const Comments = (props) => {
-  const { postId, user } = props;
+  const { postId } = props;
+  const { currentUser } = useContext(UserContext);
 
   const [comments, setComments] = useState([]);
 
@@ -24,7 +26,7 @@ const Comments = (props) => {
           <p>Submitted by <b>{comment.user.username}</b> on {comment.timestamp}</p>
         </div>
       ))}
-      {user && <CommentForm postId={postId} user={user} fetchComments={fetchComments} />}
+      {currentUser && <CommentForm postId={postId} fetchComments={fetchComments} />}
     </div>
   )
 };

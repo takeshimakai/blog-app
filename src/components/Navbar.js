@@ -1,9 +1,12 @@
-const Navbar = (props) => {
-  const { user } = props;
+import { useContext } from 'react';
+import UserContext from '../context/UserContext';
+
+const Navbar = () => {
+  const { currentUser } = useContext(UserContext);
 
   return (
     <ul id='navbar'>
-      {user && user.isAdmin &&
+      {currentUser && currentUser.isAdmin &&
         <li>
           <a href='/new-post'>Create new post</a>
         </li>
@@ -11,7 +14,7 @@ const Navbar = (props) => {
       <li>
         <a href='/'>Home</a>
       </li>
-      {!user &&
+      {!currentUser &&
         <li>
           <a href='/signup'>Sign up</a>
         </li>

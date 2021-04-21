@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
-const Login = (props) => {
-  const { setUser } = props;
+import UserContext from '../context/UserContext';
+
+const Login = () => {
+  const { updateCurrentUser } = useContext(UserContext);
 
   const [values, setValues] = useState({username: '', password: ''});
 
@@ -25,7 +27,7 @@ const Login = (props) => {
 
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
+        updateCurrentUser();
       } else {
         throw user;
       }

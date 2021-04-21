@@ -1,5 +1,5 @@
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
 
 import Navbar from './components/Navbar';
 import PostList from './components/post/PostList';
@@ -9,18 +9,24 @@ import Signup from './components/Signup';
 import PostForm from './components/PostForm';
 import Error from './components/Error';
 
+import UserContext from './context/UserContext';
 import tokenIsValid from './utils/tokenIsValid';
 
 function App() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState({
+    ...useContext(UserContext),
+    updateCurrentUser: () => setUser({
+      ...user,
+      currentUser: JSON.parse(localStorage.getItem('user'))})
+  });
 
   useEffect(() => {
-    if (user) {
-      tokenIsValid(user.token)
+    if (user.currentUser) {
+      tokenIsValid(user.currentUser.token)
       .then(res => {
         if (res === false) {
           localStorage.removeItem('user');
-          setUser();
+          user.updateCurrentUser();
         }
       })
       .catch(err => console.log(err));
@@ -28,16 +34,16 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <UserContext.Provider value={user}>
       <div className="App">
-        <Navbar user={user} />
-        {user
-          ? <Logout setUser={setUser} />
-          : <Login setUser={setUser} />
+        <Navbar />
+        {user.currentUser
+          ? <Logout />
+          : <Login />
         }
         <Switch>
           <Route exact path='/new-post'>
-            {user && user.isAdmin
+            {user.currentUser && user.currentUser.isAdmin
               ? <PostForm />
               : <Error />
             }
@@ -46,11 +52,11 @@ function App() {
             <Signup />
           </Route>
           <Route path='/'>
-            <PostList user={user} />
+            <PostList />
           </Route>
         </Switch>
       </div>
-    </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 

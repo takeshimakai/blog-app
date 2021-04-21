@@ -1,10 +1,14 @@
+import { useContext } from 'react';
 import { useParams, Link, Switch, Route } from 'react-router-dom';
 
 import PostForm from '../PostForm';
 import Comments from '../comment/Comments';
 
+import UserContext from '../../context/UserContext';
+
 const Post = (props) => {
-  const { posts, user, isLoading } = props;
+  const { posts, isLoading } = props;
+  const { currentUser } = useContext(UserContext);
   const { postId } = useParams();
 
   const post = posts.find(post => post._id === postId);
@@ -20,8 +24,8 @@ const Post = (props) => {
               <h3>{post.title}</h3>
               <p>{post.content}</p>
               <p>{post.datePublished}</p>
-              {user && user.isAdmin && <Link to={`/${postId}/edit-post`}>Edit</Link>}
-              <Comments postId={postId} user={user} />
+              {currentUser && currentUser.isAdmin && <Link to={`/${postId}/edit-post`}>Edit</Link>}
+              <Comments postId={postId} />
             </div>
           : <p>Loading...</p>
         }

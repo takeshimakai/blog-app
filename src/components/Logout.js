@@ -1,9 +1,13 @@
-const Logout = (props) => {
-  const { setUser } = props;
+import { useContext } from 'react';
+
+import UserContext from '../context/UserContext';
+
+const Logout = () => {
+  const { updateCurrentUser } = useContext(UserContext);
 
   const logout = () => {
     localStorage.removeItem('user');
-    setUser();
+    updateCurrentUser();
   };
 
   return (
