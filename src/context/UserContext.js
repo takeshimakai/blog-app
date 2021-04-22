@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext } from 'react';
 
-const UserContext = React.createContext({
+const UserContext = createContext({
   currentUser: JSON.parse(localStorage.getItem('user')),
   updateCurrentUser: () => {}
 });

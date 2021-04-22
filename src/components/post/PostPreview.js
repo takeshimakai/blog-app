@@ -6,9 +6,9 @@ const PostPreview = (props) => {
   return (
     <div className='post-preview'>
       <h3>
-        <Link to={`/${post._id}`}>{post.title}</Link>
+        <Link to={`/${post._id}`} dangerouslySetInnerHTML={{__html: post.title}} />
       </h3>
-      <p>{post.content}</p>
+      <p dangerouslySetInnerHTML={{__html: post.content}} />
       <p>{post.datePublished}</p>
     </div>
   )

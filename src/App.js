@@ -44,7 +44,7 @@ function App() {
         <Switch>
           <Route exact path='/new-post'>
             {user.currentUser && user.currentUser.isAdmin
-              ? <PostForm />
+              ? <PostForm isNewPost={true} />
               : <Error />
             }
           </Route>

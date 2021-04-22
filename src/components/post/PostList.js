@@ -10,7 +10,7 @@ const PostList = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  });
 
   const fetchPosts = () => {
     fetch('http://localhost:5000/posts')

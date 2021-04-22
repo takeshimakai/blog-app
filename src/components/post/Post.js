@@ -15,14 +15,14 @@ const Post = (props) => {
 
   return (
     <Switch>
-      <Route path={`/${postId}/edit-post`}>
+      <Route path='/:postId/edit-post'>
         <PostForm post={post} />
       </Route>
-      <Route path={`/${postId}`}>
+      <Route path='/:postId'>
         {!isLoading
           ? <div className='post-container'>
-              <h3>{post.title}</h3>
-              <p>{post.content}</p>
+              <h3 dangerouslySetInnerHTML={{__html: post.title}} />
+              <p dangerouslySetInnerHTML={{__html: post.content}} />
               <p>{post.datePublished}</p>
               {currentUser && currentUser.isAdmin && <Link to={`/${postId}/edit-post`}>Edit</Link>}
               <Comments postId={postId} />

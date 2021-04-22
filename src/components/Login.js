@@ -31,8 +31,7 @@ const Login = () => {
       } else {
         throw user;
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   }
