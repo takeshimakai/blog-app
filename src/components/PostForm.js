@@ -12,6 +12,12 @@ const PostForm = (props) => {
 
   useEffect(() => {
     if (post) {
+      const parser = new DOMParser();
+      for (const prop in post) {
+        if (prop === 'title' || prop === 'content') {
+          post[prop] = parser.parseFromString(post[prop], 'text/html').body.textContent;
+        }
+      }
       setValues({...values, ...post});
     };
   }, []);
