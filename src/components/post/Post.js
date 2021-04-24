@@ -3,6 +3,7 @@ import { useParams, Link, Switch, Route } from 'react-router-dom';
 
 import PostForm from '../PostForm';
 import Comments from '../comment/Comments';
+import Error from '../Error';
 
 import UserContext from '../../context/UserContext';
 
@@ -16,7 +17,10 @@ const Post = (props) => {
   return (
     <Switch>
       <Route path='/:postId/edit-post'>
-        <PostForm post={post} />
+        {currentUser && currentUser.isAdmin
+          ? <PostForm post={post} />
+          : <Error />
+        }
       </Route>
       <Route path='/:postId'>
         {!isLoading
