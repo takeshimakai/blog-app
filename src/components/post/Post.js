@@ -27,7 +27,8 @@ const Post = (props) => {
           ? <div className='post-container'>
               <h3 dangerouslySetInnerHTML={{__html: post.title}} />
               <p dangerouslySetInnerHTML={{__html: post.content}} />
-              <p>{post.datePublished}</p>
+              <p>Created on {post.dateCreated}</p>
+              <p>Published on {post.datePublished}</p>
               {currentUser && currentUser.isAdmin && <Link to={`/${postId}/edit-post`}>Edit</Link>}
               <Comments postId={postId} />
             </div>

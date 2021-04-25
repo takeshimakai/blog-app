@@ -27,7 +27,7 @@ const PostList = () => {
     .catch(err => console.log(err))
   };
 
-  const handleClick = (e) => {
+  const togglePosts = (e) => {
     const { value } = e.target;
     
     switch (value) {
@@ -53,9 +53,9 @@ const PostList = () => {
       <Route path='/'>
         {currentUser && currentUser.isAdmin &&
           <ul>
-            <li><button value='all' onClick={handleClick}>All</button></li>
-            <li><button value='published' onClick={handleClick}>Published</button></li>
-            <li><button value='unpublished' onClick={handleClick}>Unpublished</button></li>
+            <li><button value='all' onClick={togglePosts}>All</button></li>
+            <li><button value='published' onClick={togglePosts}>Published</button></li>
+            <li><button value='unpublished' onClick={togglePosts}>Unpublished</button></li>
           </ul>
         }
         <div id='post-list'>
