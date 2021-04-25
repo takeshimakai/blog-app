@@ -3,8 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import UserContext from '../context/UserContext';
 
-const PostForm = (props) => {
-  const { post, isNewPost } = props;
+const PostForm = ({ post, isNewPost }) => {
   const { currentUser } = useContext(UserContext);
 
   const [values, setValues] = useState({ title: '', content: '' });

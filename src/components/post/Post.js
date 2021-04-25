@@ -7,8 +7,7 @@ import Error from '../Error';
 
 import UserContext from '../../context/UserContext';
 
-const Post = (props) => {
-  const { posts, isLoading } = props;
+const Post = ({ posts, isLoading }) => {
   const { currentUser } = useContext(UserContext);
   const { postId } = useParams();
 
@@ -28,7 +27,7 @@ const Post = (props) => {
               <h3 dangerouslySetInnerHTML={{__html: post.title}} />
               <p dangerouslySetInnerHTML={{__html: post.content}} />
               <p>Created on {post.dateCreated}</p>
-              <p>Published on {post.datePublished}</p>
+              {post.datePublished && <p>Published on {post.datePublished}</p>}
               {currentUser && currentUser.isAdmin && <Link to={`/${postId}/edit-post`}>Edit</Link>}
               <Comments postId={postId} />
             </div>

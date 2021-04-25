@@ -3,8 +3,7 @@ import { useEffect, useState, useContext } from 'react';
 import CommentForm from './CommentForm';
 import UserContext from '../../context/UserContext';
 
-const Comments = (props) => {
-  const { postId } = props;
+const Comments = ({ postId }) => {
   const { currentUser } = useContext(UserContext);
 
   const [comments, setComments] = useState([]);
